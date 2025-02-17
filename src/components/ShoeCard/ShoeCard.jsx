@@ -31,9 +31,20 @@ const ShoeCard = ({
       ? 'new-release'
       : 'default'
 
+  const Flag = ({ variant }) => {
+    if (variant === 'on-sale') {
+      return <FlagText style={{ '--color': 'hsla(340, 65%, 47%, 1)' }}>Sale</FlagText>;
+    } else if (variant === 'new-release') {
+      return <FlagText style={{ '--color': 'hsla(240, 60%, 63%, 1)' }}>Just released!</FlagText>;
+    } else {
+      return <></>;
+    }
+  }
+
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
+        <Flag variant={variant} />
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
         </ImageWrapper>
@@ -44,27 +55,48 @@ const ShoeCard = ({
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          {salePrice && <SalePrice>{formatPrice(salePrice)}</SalePrice>}
         </Row>
       </Wrapper>
     </Link>
   );
 };
 
+const FlagText = styled.p`
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  right: -4px;
+  padding: 8px 12px;
+  background-color: var(--color);
+  border-radius: 2px;
+  color: hsla(0, 0%, 100%, 1);
+  font-weight: 700;
+`;
+
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
+  flex: 1 1 324px;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  width: 100%;
+  position: relative;
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  width: 100%;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
